@@ -16,33 +16,15 @@ const NumberRegister = ({ navigation }) => {
   const sendNumber = async () => {
     if (number.length > 5) {
       try {
-        await AsyncStorage.setItem("phone", number)
-        navigation.navigate('Register')
-
+        await AsyncStorage.setItem("phone", number);
+        navigation.navigate("Register");
       } catch (e) {
         console.log("error");
       }
-
     } else {
       setVal(true);
     }
   };
-
-  // const handleSignUp = () => {
-  //   const signUpData = {
-  //     username: "davi01",
-  //     first_name: "davlatshoh",
-  //     last_name: "naimov",
-  //     email: "davlatshoh.fullstack@gmail.com",
-  //     password: "davi2001",
-  //     confirm_password: "davi2001",
-  //   };
-  //   SignUpUser(signUpData)
-  //     .then(async (res) => {
-  //       console.log(res);
-  //     })
-  //     .catch((err) => console.log(err));
-  // };
 
   const homeNavigateHandle = () => {
     navigation.navigate("Countries");

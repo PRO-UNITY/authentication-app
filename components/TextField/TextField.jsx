@@ -7,6 +7,7 @@ import { Size } from "../../constants/Size";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { BASE_URL } from "../../services";
 import { useIsFocused } from "@react-navigation/native";
+import Flag from "../../assets/flag.jpg";
 
 const TextField = ({ item, setNumber }) => {
   const [num, setNum] = useState("");
@@ -25,8 +26,7 @@ const TextField = ({ item, setNumber }) => {
         setNum(item.dial_code);
         setImg(item.img);
       } else {
-        setNum("+998")
-        setImg('https://www.samdu.uz/upload/cover-images/61312fa1aa6d7-61312fa1aa6d8-61312fa1aa6d9-61312fa1aa6da.jpg')
+        setNum("+998");
       }
     } catch (e) {}
   };
@@ -35,7 +35,10 @@ const TextField = ({ item, setNumber }) => {
     <View style={styles.container}>
       <Button btnFunc={item}>
         <View style={styles.country}>
-          <Image style={styles.countryFlag} source={BASE_URL + img} />
+          <Image
+            style={styles.countryFlag}
+            source={img ? BASE_URL + img : Flag}
+          />
           <Text>{num}</Text>
           <View style={styles.line}></View>
         </View>
