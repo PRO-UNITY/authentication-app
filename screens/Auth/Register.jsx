@@ -1,10 +1,10 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   View,
   Text,
   StyleSheet,
   TextInput,
-  TouchableOpacity,
+  Pressable,
   Picker,
 } from "react-native";
 import { Button } from "../../components";
@@ -14,15 +14,55 @@ import { Size } from "../../constants/Size";
 import { FontSize } from "../../constants/FontSize";
 import { FontWeight } from "../../constants/FontWeight";
 import { Shadow } from "../../constants/Shadow";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const Register = ({ navigation }) => {
-  const [selectedValue, setSelectedValue] = useState("option1");
+  const [selectedValue, setSelectedValue] = useState("Man");
+  const [phone, setPhone] = useState("");
+  const [dial_code, setDial_code] = useState("");
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [gander, setGander] = useState("");
+
+  useEffect(() => {
+    getData();
+  }, []);
+
+  const getData = async () => {
+    try {
+      const phone_number = await AsyncStorage.getItem("phone");
+      const code = await AsyncStorage.getItem("country");
+      const code_dial = JSON.parse(code);
+      if (phone_number !== null) {
+        setPhone(phone_number);
+        setDial_code(code_dial.dial_code);
+      }
+    } catch (e) {}
+  };
+
+  const handleSignUp = () => {
+    const signUpData = {
+      username: "davi01",
+      first_name: "davlatshoh",
+      last_name: "naimov",
+      email: "davlatshoh.fullstack@gmail.com",
+      password: "davi2001",
+      confirm_password: "davi2001",
+      phone: dial_code + phone,
+    };
+    SignUpUser(signUpData)
+      .then(async (res) => {
+        console.log(res);
+      })
+      .catch((err) => console.log(err));
+  };
+
+  console.log(dial_code + phone);
   return (
     <View style={styles.container}>
-      <Text style={styles.headTitle}>
-        Fill in The Form <br />
-        With Your Data
-      </Text>
+      <Text style={styles.headTitle}>Fill in The Form With Your Data</Text>
       <Text style={styles.description}>
         Create a new account to make it easier for you to bid anywhere and
         anytime
@@ -31,6 +71,7 @@ const Register = ({ navigation }) => {
         <View style={{ marginBottom: Space.M2 }}>
           <Text style={styles.label}>Name</Text>
           <TextInput
+            onChange={() => setName(e.target.value)}
             placeholder="John"
             placeholderTextColor={"grey"}
             style={[styles.input, { outline: Size.NONE }]}
@@ -39,7 +80,8 @@ const Register = ({ navigation }) => {
         <View style={{ marginBottom: Space.M2 }}>
           <Text style={styles.label}>Email</Text>
           <TextInput
-            keyboardType="email-address"
+            onChange={() => setEmail(e.target.value)}
+            inputMode="email-address"
             placeholder="example@gmail.com"
             placeholderTextColor={"grey"}
             style={[styles.input, { outline: Size.NONE }]}
@@ -49,6 +91,7 @@ const Register = ({ navigation }) => {
           <Text style={styles.label}>Password</Text>
           <TextInput
             secureTextEntry
+            onChange={() => setPassword(e.target.value)}
             placeholder="********"
             placeholderTextColor={"grey"}
             style={[styles.input, { outline: Size.NONE }]}
@@ -57,6 +100,7 @@ const Register = ({ navigation }) => {
         <View style={{ marginBottom: Space.M2 }}>
           <Text style={styles.label}>Confirm Password</Text>
           <TextInput
+            onChange={() => setConfirmPassword(e.target.value)}
             secureTextEntry
             placeholder="********"
             placeholderTextColor={"grey"}
@@ -95,7 +139,7 @@ const Register = ({ navigation }) => {
             },
           ]}
         >
-          <TouchableOpacity style={styles.btn}>
+          <Pressable style={styles.btn}>
             <Text
               style={[
                 {
@@ -105,7 +149,7 @@ const Register = ({ navigation }) => {
             >
               Next
             </Text>
-          </TouchableOpacity>
+          </Pressable>
         </View>
       </View>
 
@@ -185,7 +229,7 @@ const styles = StyleSheet.create({
     borderWidth: Size.NONE,
     borderTopWidth: Size.DEFAULT,
     borderTopColor: Colors.light,
-    width: Size.W100,
+    right: Size.NONE,
     left: Size.NONE,
     paddingLeft: Space.P3,
     paddingRight: Space.P3,

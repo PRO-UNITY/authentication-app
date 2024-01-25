@@ -1,13 +1,9 @@
 export const Size = {
-  W100: "100%",
-  W75: "75%",
-  W50: "50%",
-  W25: "25%",
 
-  TEXTFIELD: "50px",
-  BUTTON: "40px",
-  H20 : "20px",
-  H100 : "100%",
+  TEXTFIELD: 50,
+  BUTTON: 40,
+  H20 : 20,
+  H100 : 100,
 
   NONE : 0,
 

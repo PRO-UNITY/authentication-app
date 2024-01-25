@@ -1,34 +1,49 @@
-import { StyleSheet, TextInput, View, Image, Text } from "react-native";
-import React from "react";
+import { StyleSheet, Pressable, View, Image, Text } from "react-native";
+import React, { useEffect, useState } from "react";
 import { countries } from "../../mock/data";
 import { Space } from "../../constants/Space";
 import { Size } from "../../constants/Size";
 import { Shadow } from "../../constants/Shadow";
 import { FontWeight } from "../../constants/FontWeight/index";
 import { FontSize } from "../../constants/FontSize/index";
+import { BASE_URL, GetCountry } from "../../services";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
-const CountryCard = (item) => {
+const CountryCard = ({ navigation }) => {
+  const [countries, setCountries] = useState([]);
+
+  useEffect(() => {
+    GetCountry().then((res) => {
+      setCountries(res);
+    });
+  }, []);
+
+  const storeData = async (item) => {
+    try {
+      const jsonValue = JSON.stringify(item);
+      await AsyncStorage.setItem("country", jsonValue);
+      navigation.navigate("Numberregister");
+    } catch (e) {}
+  };
+
   return (
-    <>
-      {countries.map((item, index) => (
-        <View key={index} style={{ marginBottom: Space.M3 }}>
-          <Text style={styles.letter}>{item.letter}</Text>
-          <View style={styles.container}>
-            {item.details.map((i, ind) => (
-              <View key={ind} style={{padding:Space.P2, width:Size.W50}}>
-                <View style={styles.cardDetails}>
-                  <View>
-                    <Image style={styles.countryFlag} source={i.image} />
-                    <Text style={styles.name}>{i.name}</Text>
-                  </View>
-                  <Text style={styles.number}>{i.number}</Text>
-                </View>
-              </View>
-            ))}
+    <View style={styles.container}>
+      {countries.map((i, index) => (
+        <Pressable
+          onPress={() => storeData(i)}
+          key={index}
+          style={{ padding: Space.P2, width: "50%" }}
+        >
+          <View style={styles.cardDetails}>
+            <View>
+              <Image style={styles.countryFlag} source={BASE_URL + i.img} />
+              <Text style={styles.name}>{i.name}</Text>
+            </View>
+            <Text style={styles.number}>{i.dial_code}</Text>
           </View>
-        </View>
+        </Pressable>
       ))}
-    </>
+    </View>
   );
 };
 
@@ -41,7 +56,6 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
   },
   cardDetails: {
-    width: Size.W100,
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
@@ -62,7 +76,7 @@ const styles = StyleSheet.create({
   },
   name: {
     fontSize: FontSize.CONTENTSM,
-    fontWeight :FontWeight.CONTENT
+    fontWeight: FontWeight.CONTENT,
   },
   letter: {
     fontSize: FontSize.CONTENT,

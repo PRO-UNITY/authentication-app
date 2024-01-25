@@ -5,7 +5,7 @@ const Stack = createNativeStackNavigator();
 
 const RootNavigator = () => {
   return (
-    <Stack.Navigator initialRouteName="Numberregister">
+    <Stack.Navigator >
       <Stack.Screen
         name="Numberregister"
         component={NumberRegister}

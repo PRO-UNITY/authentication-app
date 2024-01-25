@@ -1,5 +1,5 @@
 import React from "react";
-import { View, StyleSheet, TouchableOpacity, Text, ScrollView } from "react-native";
+import { View, StyleSheet, Pressable, Text, ScrollView } from "react-native";
 import { Colors } from "../../constants/Colors/index";
 import { CountryCard, SearchField } from "../../components";
 import { Size } from "../../constants/Size";
@@ -13,10 +13,10 @@ const Countries = ({ navigation }) => {
     <View style={styles.container}>
       <SearchField item={homeNavigateHandle}></SearchField>
       <ScrollView
-        style={{ marginBottom: Space.M3 }}
+        style={{ marginBottom: Space.M3,flex:1 }}
         showsVerticalScrollIndicator={false}
       >
-        <CountryCard></CountryCard>
+        <CountryCard navigation={navigation}/>
       </ScrollView>
       <View style={styles.bottomPart}>
         <View
@@ -30,7 +30,7 @@ const Countries = ({ navigation }) => {
             },
           ]}
         >
-          <TouchableOpacity onPress={homeNavigateHandle} style={styles.btn}>
+          <Pressable onPress={homeNavigateHandle} style={styles.btn}>
             <Text
               style={[
                 {
@@ -40,7 +40,7 @@ const Countries = ({ navigation }) => {
             >
               Next
             </Text>
-          </TouchableOpacity>
+          </Pressable>
         </View>
       </View>
     </View>
@@ -67,7 +67,7 @@ const styles = StyleSheet.create({
     borderWidth: Size.NONE,
     borderTopWidth: Size.DEFAULT,
     borderTopColor: Colors.light,
-    width: Size.W100,
+    right:Size.NONE,
     left: Size.NONE,
     paddingLeft: Space.P3,
     paddingRight: Space.P3,

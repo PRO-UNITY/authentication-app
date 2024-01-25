@@ -19,7 +19,7 @@ const SearchField = (item) => {
             placeholderTextColor={"grey"}
           />
         </View>
-        <View style={[{ color: Colors.info, flex: 1 }]}>
+        <View style={styles.cancelBtn}>
           <Button btnFunc={item.item}>
             <Text
               style={[
@@ -41,37 +41,32 @@ export default SearchField;
 
 const styles = StyleSheet.create({
   container: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "start",
     height: Size.TEXTFIELD,
     marginVertical: Space.M1,
     borderColor: "transparent",
-    backgroundColor: Colors.white,
+    backgroundColor: "",
     borderRadius: Size.ROUNDED2,
   },
   searchbar: {
     flexDirection: "row",
     alignItems: "center",
-    justifyContent: "space-between",
+    justifyContent: "start",
     boxShadow: Shadow.shadow,
     borderRadius: Size.ROUNDED1,
     gap: Space.G1,
-    flex: 5,
+    flex:5,
     paddingLeft: Space.P2,
     paddingRight: Space.P2,
   },
   country: {
     flexDirection: "row",
-    width: Size.W100,
     gap: Space.G2,
-    alignItems: "center",
+    justifyContent: "space-between",
   },
   input: {
     borderWidth: Size.NONE,
-    height: Size.H100,
-    flex: 5,
     padding: Space.P2,
     borderRadius: Size.ROUNDED1,
   },
+  cancelBtn: {},
 });

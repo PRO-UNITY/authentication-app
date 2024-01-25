@@ -1,12 +1,12 @@
 import React from "react";
-import { StyleSheet, TouchableOpacity, View } from "react-native";
+import { StyleSheet, Pressable, View } from "react-native";
 import { Size } from "../../constants/Size";
 
 const Button = ({ children, btnFunc }) => {
   return (
-    <TouchableOpacity style={[styles.button]} onPress={btnFunc}>
+    <Pressable style={[styles.button]} onPress={btnFunc}>
       {children}
-    </TouchableOpacity>
+    </Pressable>
   );
 };
 

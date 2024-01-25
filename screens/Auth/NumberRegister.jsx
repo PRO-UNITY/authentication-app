@@ -1,31 +1,65 @@
-import React from "react";
-import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
+import React, { useState } from "react";
+import { View, Text, StyleSheet, Pressable, Alert } from "react-native";
 import { Button, TextField } from "../../components";
 import { Colors } from "../../constants/Colors/index";
 import { Size } from "../../constants/Size";
 import { Space } from "../../constants/Space";
 import { FontSize } from "../../constants/FontSize";
 import { FontWeight } from "../../constants/FontWeight";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+// import { SignUpUser } from "../../services";
 
 const NumberRegister = ({ navigation }) => {
+  const [number, setNumber] = useState("");
+  const [val, setVal] = useState(false);
+
+  const sendNumber = async () => {
+    if (number.length > 5) {
+      try {
+        await AsyncStorage.setItem("phone", number)
+        navigation.navigate('Register')
+
+      } catch (e) {
+        console.log("error");
+      }
+
+    } else {
+      setVal(true);
+    }
+  };
+
+  // const handleSignUp = () => {
+  //   const signUpData = {
+  //     username: "davi01",
+  //     first_name: "davlatshoh",
+  //     last_name: "naimov",
+  //     email: "davlatshoh.fullstack@gmail.com",
+  //     password: "davi2001",
+  //     confirm_password: "davi2001",
+  //   };
+  //   SignUpUser(signUpData)
+  //     .then(async (res) => {
+  //       console.log(res);
+  //     })
+  //     .catch((err) => console.log(err));
+  // };
+
   const homeNavigateHandle = () => {
     navigation.navigate("Countries");
   };
-  const registerNavigateHandle = () => {
-    navigation.navigate("Register");
-  };
+
   return (
     <View style={styles.container}>
-      <Text style={styles.headTitle}>
-        Create a New <br />
-        account
-      </Text>
+      <Text style={styles.headTitle}>Create a New account</Text>
       <Text style={styles.description}>
         Create a new account to make it easier for you to <br />
         bid anywhere and anytime
       </Text>
+      <Text style={{ color: "red" }}>
+        {val ? "Please type your number" : ""}
+      </Text>
       <View style={styles.inputCard}>
-        <TextField item={homeNavigateHandle} />
+        <TextField setNumber={setNumber} item={homeNavigateHandle} />
       </View>
       <View style={styles.btnCard}>
         <View
@@ -39,7 +73,7 @@ const NumberRegister = ({ navigation }) => {
             },
           ]}
         >
-          <TouchableOpacity onPress={registerNavigateHandle} style={styles.btn}>
+          <Pressable onPress={sendNumber} style={styles.btn}>
             <Text
               style={[
                 {
@@ -49,7 +83,7 @@ const NumberRegister = ({ navigation }) => {
             >
               Next
             </Text>
-          </TouchableOpacity>
+          </Pressable>
         </View>
       </View>
 
@@ -110,7 +144,7 @@ const styles = StyleSheet.create({
     borderWidth: Size.NONE,
     borderTopWidth: Size.DEFAULT,
     borderTopColor: Colors.light,
-    width: Size.W100,
+    right: Size.NONE,
     left: Size.NONE,
     paddingLeft: Space.P3,
     paddingRight: Space.P3,

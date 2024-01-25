@@ -1,24 +1,45 @@
 import { StyleSheet, TextInput, View, Image, Text } from "react-native";
 import Button from "../Button/Button";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Space } from "../../constants/Space";
 import { Shadow } from "../../constants/Shadow";
 import { Size } from "../../constants/Size";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { BASE_URL } from "../../services";
+import { useIsFocused } from "@react-navigation/native";
 
-const TextField = (item) => {
+const TextField = ({ item, setNumber }) => {
+  const [num, setNum] = useState("");
+  const [img, setImg] = useState("");
+  const isFocused = useIsFocused();
+
+  useEffect(() => {
+    getData();
+  }, [isFocused]);
+
+  const getData = async () => {
+    try {
+      const jsonValue = await AsyncStorage.getItem("country");
+      const item = JSON.parse(jsonValue);
+      if (jsonValue != null) {
+        setNum(item.dial_code);
+        setImg(item.img);
+      } else {
+      }
+    } catch (e) {}
+  };
+
   return (
     <View style={styles.container}>
-      <Button btnFunc={item.item}>
+      <Button btnFunc={item}>
         <View style={styles.country}>
-          <Image
-            style={styles.countryFlag}
-            source={require("../../assets/user.jpg")}
-          />
-          <Text>+1</Text>
+          <Image style={styles.countryFlag} source={BASE_URL + img} />
+          <Text>{num}</Text>
           <View style={styles.line}></View>
         </View>
       </Button>
       <TextInput
+        onChange={(e) => setNumber(e.target.value)}
         style={[styles.input, { outline: Size.NONE }]}
         placeholder="Your phone number"
         placeholderTextColor={"grey"}
@@ -53,7 +74,7 @@ const styles = StyleSheet.create({
   countryFlag: {
     width: Size.BUTTON,
     height: Size.BUTTON,
-    borderRadius: Size.W50,
+    borderRadius: Size.ROUNDED,
   },
   line: {
     backgroundColor: "grey",
