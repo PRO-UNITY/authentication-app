@@ -25,6 +25,8 @@ const TextField = ({ item, setNumber }) => {
         setNum(item.dial_code);
         setImg(item.img);
       } else {
+        setNum("+998")
+        setImg('https://register-app.prounity.uz/api/food-delivery/media/country/61312fa1aa6d7-61312fa1aa6d8-61312fa1aa6d9-61312fa1aa6da.jpg')
       }
     } catch (e) {}
   };

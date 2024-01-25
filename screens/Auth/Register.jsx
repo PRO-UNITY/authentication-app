@@ -15,7 +15,7 @@ import { FontSize } from "../../constants/FontSize";
 import { FontWeight } from "../../constants/FontWeight";
 import { Shadow } from "../../constants/Shadow";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { SignUpUser } from "../../services";
+import { GetGender, SignUpUser } from "../../services";
 
 const Register = ({ navigation }) => {
   const [phone, setPhone] = useState("");
@@ -24,10 +24,16 @@ const Register = ({ navigation }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
-  const [gander, setGander] = useState("");
+  const [gander, setGander] = useState(0);
+  const [data, setData] = useState([]);
+
+  console.log(gander);
 
   useEffect(() => {
     getData();
+    GetGender().then((res) => {
+      setData(res);
+    });
   }, []);
 
   const getData = async () => {
@@ -54,7 +60,7 @@ const Register = ({ navigation }) => {
     console.log(signUpData);
     SignUpUser(signUpData)
       .then(async (res) => {
-        navigation.navigate('Numberregister')
+        navigation.navigate("Numberregister");
       })
       .catch((err) => console.log(err));
   };
@@ -111,7 +117,7 @@ const Register = ({ navigation }) => {
           <Text style={styles.label}>Gander</Text>
           <Picker
             gander={gander}
-            onValueChange={(itemValue, itemIndex) => setGander(itemValue)}
+            onValueChange={(itemValue) => setGander(itemValue)}
             style={{
               borderWidth: Size.NONE,
               paddingTop: Space.P2,
@@ -119,9 +125,9 @@ const Register = ({ navigation }) => {
               outline: Size.NONE,
             }}
           >
-            <Picker.Item label="Male" value="Male" />
-            <Picker.Item label="Female" value="Female" />
-            <Picker.Item label="No said" value="No said" />
+            {data?.map((item, index) => (
+              <Picker.Item key={index} label={`${item.name}`} value={`${item.id}`} />
+            ))}
           </Picker>
         </View>
       </View>
