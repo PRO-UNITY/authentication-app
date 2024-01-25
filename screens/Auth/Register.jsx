@@ -15,6 +15,7 @@ import { FontSize } from "../../constants/FontSize";
 import { FontWeight } from "../../constants/FontWeight";
 import { Shadow } from "../../constants/Shadow";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { SignUpUser } from "../../services";
 
 const Register = ({ navigation }) => {
   const [phone, setPhone] = useState("");
@@ -47,15 +48,15 @@ const Register = ({ navigation }) => {
       email: email,
       password: password,
       confirm_password: confirmPassword,
-      gander: gander,
+      gender: gander,
       phone: dial_code + phone,
     };
     console.log(signUpData);
-    // SignUpUser(signUpData)
-    //   .then(async (res) => {
-    //     console.log(res);
-    //   })
-    //   .catch((err) => console.log(err));
+    SignUpUser(signUpData)
+      .then(async (res) => {
+        navigation.navigate('Numberregister')
+      })
+      .catch((err) => console.log(err));
   };
 
   console.log(dial_code + phone);
