@@ -17,7 +17,6 @@ import { Shadow } from "../../constants/Shadow";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const Register = ({ navigation }) => {
-  const [selectedValue, setSelectedValue] = useState("Man");
   const [phone, setPhone] = useState("");
   const [dial_code, setDial_code] = useState("");
   const [name, setName] = useState("");
@@ -44,19 +43,19 @@ const Register = ({ navigation }) => {
 
   const handleSignUp = () => {
     const signUpData = {
-      username: "davi01",
-      first_name: "davlatshoh",
-      last_name: "naimov",
-      email: "davlatshoh.fullstack@gmail.com",
-      password: "davi2001",
-      confirm_password: "davi2001",
+      username: name,
+      email: email,
+      password: password,
+      confirm_password: confirmPassword,
+      gander: gander,
       phone: dial_code + phone,
     };
-    SignUpUser(signUpData)
-      .then(async (res) => {
-        console.log(res);
-      })
-      .catch((err) => console.log(err));
+    console.log(signUpData);
+    // SignUpUser(signUpData)
+    //   .then(async (res) => {
+    //     console.log(res);
+    //   })
+    //   .catch((err) => console.log(err));
   };
 
   console.log(dial_code + phone);
@@ -71,7 +70,7 @@ const Register = ({ navigation }) => {
         <View style={{ marginBottom: Space.M2 }}>
           <Text style={styles.label}>Name</Text>
           <TextInput
-            onChange={() => setName(e.target.value)}
+            onChange={(e) => setName(e.target.value)}
             placeholder="John"
             placeholderTextColor={"grey"}
             style={[styles.input, { outline: Size.NONE }]}
@@ -80,7 +79,7 @@ const Register = ({ navigation }) => {
         <View style={{ marginBottom: Space.M2 }}>
           <Text style={styles.label}>Email</Text>
           <TextInput
-            onChange={() => setEmail(e.target.value)}
+            onChange={(e) => setEmail(e.target.value)}
             inputMode="email-address"
             placeholder="example@gmail.com"
             placeholderTextColor={"grey"}
@@ -91,7 +90,7 @@ const Register = ({ navigation }) => {
           <Text style={styles.label}>Password</Text>
           <TextInput
             secureTextEntry
-            onChange={() => setPassword(e.target.value)}
+            onChange={(e) => setPassword(e.target.value)}
             placeholder="********"
             placeholderTextColor={"grey"}
             style={[styles.input, { outline: Size.NONE }]}
@@ -100,7 +99,7 @@ const Register = ({ navigation }) => {
         <View style={{ marginBottom: Space.M2 }}>
           <Text style={styles.label}>Confirm Password</Text>
           <TextInput
-            onChange={() => setConfirmPassword(e.target.value)}
+            onChange={(e) => setConfirmPassword(e.target.value)}
             secureTextEntry
             placeholder="********"
             placeholderTextColor={"grey"}
@@ -110,10 +109,8 @@ const Register = ({ navigation }) => {
         <View style={{ marginBottom: Space.M2 }}>
           <Text style={styles.label}>Gander</Text>
           <Picker
-            selectedValue={selectedValue}
-            onValueChange={(itemValue, itemIndex) =>
-              setSelectedValue(itemValue)
-            }
+            gander={gander}
+            onValueChange={(itemValue, itemIndex) => setGander(itemValue)}
             style={{
               borderWidth: Size.NONE,
               paddingTop: Space.P2,
@@ -139,7 +136,7 @@ const Register = ({ navigation }) => {
             },
           ]}
         >
-          <Pressable style={styles.btn}>
+          <Pressable onPress={handleSignUp} style={styles.btn}>
             <Text
               style={[
                 {
