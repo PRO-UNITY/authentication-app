@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { View, StyleSheet, Pressable, Text, ScrollView } from "react-native";
 import { Colors } from "../../constants/Colors/index";
 import { CountryCard, SearchField } from "../../components";
@@ -6,17 +6,18 @@ import { Size } from "../../constants/Size";
 import { Space } from "../../constants/Space";
 
 const Countries = ({ navigation }) => {
+  const [search, setSearch] = useState('')
   const homeNavigateHandle = () => {
     navigation.navigate("Numberregister");
   };
   return (
     <View style={styles.container}>
-      <SearchField item={homeNavigateHandle}></SearchField>
+      <SearchField setSearch={setSearch} item={homeNavigateHandle}></SearchField>
       <ScrollView
         style={{ marginBottom: Space.M3,flex:1 }}
         showsVerticalScrollIndicator={false}
       >
-        <CountryCard navigation={navigation}/>
+        <CountryCard search={search} navigation={navigation}/>
       </ScrollView>
       <View style={styles.bottomPart}>
         <View

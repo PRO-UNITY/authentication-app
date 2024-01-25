@@ -9,6 +9,10 @@ export const GetCountry = async (data) => {
   const response = await axios.get(`${BASE_URL}/auth/country`);
   return response.data;
 };
+export const GetCountrySearch = async (searchData) => {
+  const response = await axios.get(`${BASE_URL}/auth/country?name=${searchData}`);
+  return response.data;
+};
 export const GetGender = async (data) => {
   const response = await axios.get(`${BASE_URL}/auth/gender`);
   return response.data;

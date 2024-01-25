@@ -26,7 +26,7 @@ const TextField = ({ item, setNumber }) => {
         setImg(item.img);
       } else {
         setNum("+998")
-        setImg('https://register-app.prounity.uz/api/food-delivery/media/country/61312fa1aa6d7-61312fa1aa6d8-61312fa1aa6d9-61312fa1aa6da.jpg')
+        setImg('https://www.samdu.uz/upload/cover-images/61312fa1aa6d7-61312fa1aa6d8-61312fa1aa6d9-61312fa1aa6da.jpg')
       }
     } catch (e) {}
   };

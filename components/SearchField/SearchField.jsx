@@ -7,20 +7,21 @@ import { Space } from "../../constants/Space";
 import { Size } from "../../constants/Size";
 import { Shadow } from "../../constants/Shadow";
 
-const SearchField = (item) => {
+const SearchField = ({ item, setSearch }) => {
   return (
     <View style={styles.container}>
       <View style={styles.country}>
         <View style={styles.searchbar}>
           <Icon name="search" size={25} color={"grey"} />
           <TextInput
+            onChange={(e) => setSearch(e.target.value)}
             style={[styles.input, { outline: Size.NONE }]}
             placeholder="Search country"
             placeholderTextColor={"grey"}
           />
         </View>
         <View style={styles.cancelBtn}>
-          <Button btnFunc={item.item}>
+          <Button btnFunc={item}>
             <Text
               style={[
                 {
@@ -54,7 +55,7 @@ const styles = StyleSheet.create({
     boxShadow: Shadow.shadow,
     borderRadius: Size.ROUNDED1,
     gap: Space.G1,
-    flex:5,
+    flex: 5,
     paddingLeft: Space.P2,
     paddingRight: Space.P2,
   },

@@ -6,17 +6,17 @@ import { Size } from "../../constants/Size";
 import { Shadow } from "../../constants/Shadow";
 import { FontWeight } from "../../constants/FontWeight/index";
 import { FontSize } from "../../constants/FontSize/index";
-import { BASE_URL, GetCountry } from "../../services";
+import { BASE_URL, GetCountry, GetCountrySearch } from "../../services";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
-const CountryCard = ({ navigation }) => {
+const CountryCard = ({ navigation, search }) => {
   const [countries, setCountries] = useState([]);
 
   useEffect(() => {
-    GetCountry().then((res) => {
-      setCountries(res);
-    });
-  }, []);
+      GetCountrySearch(search).then((res) => {
+        setCountries(res);
+      });
+  }, [search]);
 
   const storeData = async (item) => {
     try {
