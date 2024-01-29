@@ -5,29 +5,32 @@ import {
   StyleSheet,
   TextInput,
   Pressable,
-  Picker,
+  ScrollView,
 } from "react-native";
+import { Picker } from "@react-native-picker/picker";
+import {
+  Colors,
+  Space,
+  Size,
+  FontSize,
+  FontWeight,
+  Shadow,
+} from "../../constants";
+import {
+  GetObjectFromStorage,
+  GetStringFromStorage,
+} from "../../utils/Storage";
 import { Button } from "../../components";
-import { Colors } from "../../constants/Colors/index";
-import { Space } from "../../constants/Space";
-import { Size } from "../../constants/Size";
-import { FontSize } from "../../constants/FontSize";
-import { FontWeight } from "../../constants/FontWeight";
-import { Shadow } from "../../constants/Shadow";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import { GetGender, SignUpUser } from "../../services";
+import { GetUserData, userData } from "./User";
 
 const Register = ({ navigation }) => {
   const [phone, setPhone] = useState("");
   const [dial_code, setDial_code] = useState("");
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
   const [gander, setGander] = useState(0);
   const [data, setData] = useState([]);
-
-  console.log(gander);
+  const [isPicker, setIsPicker] = useState(false);
+  const [isTrue, setIsTrue] = useState(true);
 
   useEffect(() => {
     getData();
@@ -36,39 +39,42 @@ const Register = ({ navigation }) => {
     });
   }, []);
 
+  // if(userData.name.length>0 && userData.email.length>0 && userData.password.length>0 && userData.confirmPassword.length>0){
+  //   setIsTrue(false)
+  // }else{
+  //   setIsTrue(true)
+  // }
+
   const getData = async () => {
-    try {
-      const phone_number = await AsyncStorage.getItem("phone");
-      const code = await AsyncStorage.getItem("country");
-      const code_dial = JSON.parse(code);
-      if (phone_number !== null) {
-        setPhone(phone_number);
-        setDial_code(code_dial.dial_code);
-      }
-    } catch (e) {}
+    GetStringFromStorage("phone").then((res) => setPhone(res));
+    GetObjectFromStorage("country").then((res) => setDial_code(res.dial_code));
   };
+
+  const handlePicker =()=>{
+    setIsPicker(true)
+  }
 
   const handleSignUp = () => {
     const signUpData = {
-      username: name,
-      email: email,
-      password: password,
-      confirm_password: confirmPassword,
+      username: userData.name,
+      email: userData.email,
+      password: userData.password,
+      confirm_password: userData.confirmPassword,
       gender: gander,
-      phone: dial_code + phone,
+      phone: dial_code +phone,
     };
-    console.log(signUpData);
+
     SignUpUser(signUpData)
       .then(async (res) => {
-        navigation.navigate("Numberregister");
+        navigation.navigate("Success");
       })
       .catch((err) => console.log(err));
   };
 
-  console.log(dial_code + phone);
   return (
     <View style={styles.container}>
-      <Text style={styles.headTitle}>Fill in The Form With Your Data</Text>
+     <ScrollView >
+     <Text style={styles.headTitle}>Fill in The Form With Your Data</Text>
       <Text style={styles.description}>
         Create a new account to make it easier for you to bid anywhere and
         anytime
@@ -77,95 +83,82 @@ const Register = ({ navigation }) => {
         <View style={{ marginBottom: Space.M2 }}>
           <Text style={styles.label}>Name</Text>
           <TextInput
-            onChange={(e) => setName(e.target.value)}
+            onChangeText={(text)=>GetUserData('name', text)}
             placeholder="John"
             placeholderTextColor={"grey"}
-            style={[styles.input, { outline: Size.NONE }]}
+            style={styles.input}
           />
         </View>
         <View style={{ marginBottom: Space.M2 }}>
           <Text style={styles.label}>Email</Text>
           <TextInput
-            onChange={(e) => setEmail(e.target.value)}
-            inputMode="email-address"
+            onChangeText={(text)=>GetUserData('email', text)}
+            inputMode="email"
             placeholder="example@gmail.com"
             placeholderTextColor={"grey"}
-            style={[styles.input, { outline: Size.NONE }]}
+            style={styles.input}
           />
         </View>
         <View style={{ marginBottom: Space.M2 }}>
           <Text style={styles.label}>Password</Text>
           <TextInput
-            secureTextEntry
-            onChange={(e) => setPassword(e.target.value)}
+            onChangeText={(text)=>GetUserData('password', text)}
             placeholder="********"
             placeholderTextColor={"grey"}
-            style={[styles.input, { outline: Size.NONE }]}
+            style={styles.input}
           />
         </View>
         <View style={{ marginBottom: Space.M2 }}>
           <Text style={styles.label}>Confirm Password</Text>
           <TextInput
-            onChange={(e) => setConfirmPassword(e.target.value)}
-            secureTextEntry
+            onChangeText={(text)=>GetUserData('confirmPassword', text)}
             placeholder="********"
             placeholderTextColor={"grey"}
-            style={[styles.input, { outline: Size.NONE }]}
+            style={styles.input}
           />
         </View>
-        <View style={{ marginBottom: Space.M2 }}>
-          <Text style={styles.label}>Gander</Text>
-          <Picker
-            gander={gander}
-            onValueChange={(itemValue) => setGander(itemValue)}
-            style={{
-              borderWidth: Size.NONE,
-              paddingTop: Space.P2,
-              paddingBottom: Space.P2,
-              outline: Size.NONE,
-            }}
-          >
-            {data?.map((item, index) => (
-              <Picker.Item key={index} label={`${item.name}`} value={`${item.id}`} />
-            ))}
-          </Picker>
-        </View>
-      </View>
-      <View style={styles.btnCard}>
-        <View
-          style={[
-            {
-              color: Colors.white,
-              backgroundColor: Colors.info,
-              borderRadius: Size.ROUNDED1,
-              paddingLeft: Space.P4,
-              paddingRight: Space.P4,
-            },
-          ]}
-        >
-          <Pressable onPress={handleSignUp} style={styles.btn}>
-            <Text
-              style={[
-                {
-                  color: Colors.white,
-                },
-              ]}
-            >
-              Next
-            </Text>
-          </Pressable>
-        </View>
-      </View>
+        <Pressable onPress={handlePicker} style={[{ marginBottom: Space.M2 }]}>
+  <Text style={styles.label}>Gander</Text>
 
-      <View style={styles.bottomPart}>
+</Pressable>
+{isPicker === true? (
+      <Picker
+      style={{ height: 40, color: Colors.darkBlue }}
+      selectedValue={gander}
+      onValueChange={(itemValue) => {setGander(itemValue),setIsPicker(false)}}
+    >
+      {data?.map((item, index) => (
+        <Picker.Item
+          key={index}
+          label={`${item.name}`}
+          value={`${item.id}`}
+        />
+      ))}
+    </Picker>
+    ):(<View style={styles.btnCard}>
+      <View
+        style={[
+          {
+            color: Colors.white,
+            backgroundColor: Colors.info,
+            borderRadius: Size.ROUNDED1,
+            paddingLeft: Space.P4,
+            paddingRight: Space.P4,
+          },
+        ]}
+      >
+        <Pressable disabled={isTrue} onPress={handleSignUp} style={styles.btn}>
+          <Text style={{ color: Colors.white }}>Next</Text>
+        </Pressable>
+      </View>
+    </View>)}
+
+</View>
+
+</ScrollView>
+     <View style={styles.bottomPart}>
         <Text style={styles.textBottomPart}>Already have an Account?</Text>
-        <View
-          style={[
-            {
-              color: Colors.info,
-            },
-          ]}
-        >
+        <View>
           <Button>
             <Text
               style={[
@@ -179,6 +172,8 @@ const Register = ({ navigation }) => {
           </Button>
         </View>
       </View>
+
+
     </View>
   );
 };
@@ -210,7 +205,7 @@ const styles = StyleSheet.create({
     boxShadow: Shadow.shadow,
     paddingVertical: Space.P2,
     paddingHorizontal: Space.P3,
-    marginBottom: Space.M3,
+    marginBottom: Space.M4,
   },
   label: {
     fontSize: FontSize.CONTENT,

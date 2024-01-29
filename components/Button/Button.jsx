@@ -1,6 +1,6 @@
 import React from "react";
 import { StyleSheet, Pressable, View } from "react-native";
-import { Size } from "../../constants/Size";
+import { Size } from "../../constants";
 
 const Button = ({ children, btnFunc }) => {
   return (

@@ -1,11 +1,8 @@
-import { StyleSheet, TextInput, View, Text } from "react-native";
-import Button from "../Button/Button";
 import React from "react";
-import { Colors } from "../../constants/Colors/index";
+import { StyleSheet, TextInput, View, Text } from "react-native";
 import Icon from "react-native-vector-icons/Ionicons";
-import { Space } from "../../constants/Space";
-import { Size } from "../../constants/Size";
-import { Shadow } from "../../constants/Shadow";
+import Button from "../Button/Button";
+import { Colors, Space, Size, Shadow } from "../../constants";
 
 const SearchField = ({ item, setSearch }) => {
   return (
@@ -14,8 +11,8 @@ const SearchField = ({ item, setSearch }) => {
         <View style={styles.searchbar}>
           <Icon name="search" size={25} color={"grey"} />
           <TextInput
-            onChange={(e) => setSearch(e.target.value)}
-            style={[styles.input, { outline: Size.NONE }]}
+            onChangeText={setSearch}
+            style={styles.input}
             placeholder="Search country"
             placeholderTextColor={"grey"}
           />

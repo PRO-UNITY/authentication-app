@@ -1,9 +1,7 @@
 import React, { useState } from "react";
 import { View, StyleSheet, Pressable, Text, ScrollView } from "react-native";
-import { Colors } from "../../constants/Colors/index";
 import { CountryCard, SearchField } from "../../components";
-import { Size } from "../../constants/Size";
-import { Space } from "../../constants/Space";
+import { Colors, Space, Size } from "../../constants";
 
 const Countries = ({ navigation }) => {
   const [search, setSearch] = useState('')

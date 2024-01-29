@@ -1,29 +1,22 @@
 import { StyleSheet, Pressable, View, Image, Text } from "react-native";
 import React, { useEffect, useState } from "react";
-import { countries } from "../../mock/data";
-import { Space } from "../../constants/Space";
-import { Size } from "../../constants/Size";
-import { Shadow } from "../../constants/Shadow";
-import { FontWeight } from "../../constants/FontWeight/index";
-import { FontSize } from "../../constants/FontSize/index";
-import { BASE_URL, GetCountry, GetCountrySearch } from "../../services";
-import AsyncStorage from "@react-native-async-storage/async-storage";
+import { Space, Size, Shadow, FontWeight, FontSize } from "../../constants";
+import { BASE_URL, GetCountrySearch } from "../../services";
+import { SetObjectToStorage } from "../../utils/Storage";
 
 const CountryCard = ({ navigation, search }) => {
   const [countries, setCountries] = useState([]);
 
   useEffect(() => {
-      GetCountrySearch(search).then((res) => {
-        setCountries(res);
-      });
+    GetCountrySearch(search).then((res) => {
+      setCountries(res);
+    });
   }, [search]);
 
   const storeData = async (item) => {
-    try {
-      const jsonValue = JSON.stringify(item);
-      await AsyncStorage.setItem("country", jsonValue);
-      navigation.navigate("Numberregister");
-    } catch (e) {}
+    SetObjectToStorage("country", item).then(() =>
+      navigation.navigate("Numberregister")
+    );
   };
 
   return (
@@ -36,7 +29,7 @@ const CountryCard = ({ navigation, search }) => {
         >
           <View style={styles.cardDetails}>
             <View>
-              <Image style={styles.countryFlag} source={BASE_URL + i.img} />
+              <Image style={styles.countryFlag} source={{uri:BASE_URL + i.img}} />
               <Text style={styles.name}>{i.name}</Text>
             </View>
             <Text style={styles.number}>{i.dial_code}</Text>

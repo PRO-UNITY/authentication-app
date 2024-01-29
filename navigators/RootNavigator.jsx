@@ -1,5 +1,5 @@
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import { Countries, NumberRegister, Register } from "../screens";
+import { Countries, NumberRegister, Register, Success } from "../screens";
 
 const Stack = createNativeStackNavigator();
 
@@ -19,6 +19,11 @@ const RootNavigator = () => {
       <Stack.Screen
         name="Register"
         component={Register}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="Success"
+        component={Success}
         options={{ headerShown: false }}
       />
     </Stack.Navigator>

@@ -1,28 +1,20 @@
 import React, { useState } from "react";
-import { View, Text, StyleSheet, Pressable, Alert } from "react-native";
+import { View, Text, StyleSheet, Pressable, ScrollView } from "react-native";
 import { Button, TextField } from "../../components";
-import { Colors } from "../../constants/Colors/index";
-import { Size } from "../../constants/Size";
-import { Space } from "../../constants/Space";
-import { FontSize } from "../../constants/FontSize";
-import { FontWeight } from "../../constants/FontWeight";
-import AsyncStorage from "@react-native-async-storage/async-storage";
-// import { SignUpUser } from "../../services";
+import { SetStringToStorage } from "../../utils/Storage";
+import { Colors, Space, Size, FontSize, FontWeight } from "../../constants";
 
 const NumberRegister = ({ navigation }) => {
   const [number, setNumber] = useState("");
   const [val, setVal] = useState(false);
 
   const sendNumber = async () => {
-    if (number.length > 5) {
-      try {
-        await AsyncStorage.setItem("phone", number);
-        navigation.navigate("Register");
-      } catch (e) {
-        console.log("error");
-      }
-    } else {
-      setVal(true);
+    if(number.length>5){
+      SetStringToStorage("phone", number).then(() =>
+        navigation.navigate("Register")
+      );
+    }else{
+      setVal(!val)
     }
   };
 
@@ -31,10 +23,11 @@ const NumberRegister = ({ navigation }) => {
   };
 
   return (
+    <ScrollView contentContainerStyle={styles.scrollViewContainer}>
     <View style={styles.container}>
       <Text style={styles.headTitle}>Create a New account</Text>
       <Text style={styles.description}>
-        Create a new account to make it easier for you to <br />
+        Create a new account to make it easier for you to
         bid anywhere and anytime
       </Text>
       <Text style={{ color: "red" }}>
@@ -69,6 +62,7 @@ const NumberRegister = ({ navigation }) => {
         </View>
       </View>
 
+
       <View style={styles.bottomPart}>
         <Text style={styles.textBottomPart}>Already have an Account?</Text>
         <View>
@@ -86,12 +80,17 @@ const NumberRegister = ({ navigation }) => {
         </View>
       </View>
     </View>
+    </ScrollView>
   );
 };
 
 export default NumberRegister;
 
 const styles = StyleSheet.create({
+  scrollViewContainer: {
+    flex: 1,
+    justifyContent: "center",
+  },
   container: {
     flex: 1,
     backgroundColor: Colors.white,
