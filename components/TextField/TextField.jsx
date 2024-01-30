@@ -3,23 +3,28 @@ import { StyleSheet, TextInput, View, Image, Text } from "react-native";
 import { useIsFocused } from "@react-navigation/native";
 import Button from "../Button/Button";
 import { Space, Shadow, Size, Colors } from "../../constants";
-import { BASE_URL } from "../../services";
+import { BASE_URL, GetCountry } from "../../services";
 import { GetObjectFromStorage } from "../../utils/Storage";
-import Flag from "../../assets/flag.jpg";
 
 const TextField = ({ item, setNumber }) => {
   const [num, setNum] = useState("");
-  const [img, setImg] = useState("");
+  const [img, setImg] = useState(null);
+  const [defaultImg, setDefaultImg] = useState(null);
+  const [defaultDial, setDefaultDial] = useState(null);
+  const [countries, setCountries] = useState([]);
   const isFocused = useIsFocused();
-  const imageUrl = img ? BASE_URL + img : Flag;
 
   useEffect(() => {
     getData();
+    GetCountry().then((res) => {
+      setDefaultImg(BASE_URL+res[0].img);
+      setDefaultDial(res[0].dial_code);
+    });
   }, [isFocused]);
 
   const getData = async () => {
     GetObjectFromStorage("country").then((res) => {
-      setNum(res?.dial_code), setImg(res.img);
+      setNum(res?.dial_code), setImg(res?.img);
     });
   };
 
@@ -27,11 +32,8 @@ const TextField = ({ item, setNumber }) => {
     <View style={styles.container}>
       <Button btnFunc={item}>
         <View style={styles.country}>
-        <Image
-          style={styles.countryFlag}
-          source={{ uri: imageUrl }}
-        />
-          <Text>{num ? num : "+998"}</Text>
+          <Image style={styles.countryFlag} source={{ uri: img?  BASE_URL + img : defaultImg }} />
+          <Text>{num ? num : defaultDial}</Text>
           <View style={styles.line}></View>
         </View>
       </Button>
@@ -40,7 +42,7 @@ const TextField = ({ item, setNumber }) => {
         style={styles.input}
         placeholder="Your phone number"
         placeholderTextColor={"grey"}
-        inputMode='numeric'
+        inputMode="numeric"
       />
     </View>
   );
@@ -68,7 +70,7 @@ const styles = StyleSheet.create({
   input: {
     borderWidth: Size.NONE,
     paddingHorizontal: Space.P2,
-    color:Colors.darkBlue,
+    color: Colors.darkBlue,
   },
   countryFlag: {
     width: Size.BUTTON,
