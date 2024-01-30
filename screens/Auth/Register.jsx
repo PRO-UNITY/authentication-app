@@ -39,20 +39,27 @@ const Register = ({ navigation }) => {
     });
   }, []);
 
-  // if(userData.name.length>0 && userData.email.length>0 && userData.password.length>0 && userData.confirmPassword.length>0){
-  //   setIsTrue(false)
-  // }else{
-  //   setIsTrue(true)
-  // }
+  useEffect(() => {
+    if (
+      userData.name.length > 0 &&
+      userData.email.length > 0 &&
+      userData.password.length > 0 &&
+      userData.confirmPassword.length > 0
+    ) {
+      setIsTrue(false);
+    } else {
+      setIsTrue(true);
+    }
+  }, []);
 
   const getData = async () => {
     GetStringFromStorage("phone").then((res) => setPhone(res));
-    GetObjectFromStorage("country").then((res) => setDial_code(res.dial_code));
+    GetObjectFromStorage("country").then((res) => setDial_code(res?.dial_code));
   };
 
-  const handlePicker =()=>{
-    setIsPicker(true)
-  }
+  const handlePicker = () => {
+    setIsPicker(true);
+  };
 
   const handleSignUp = () => {
     const signUpData = {
@@ -61,7 +68,7 @@ const Register = ({ navigation }) => {
       password: userData.password,
       confirm_password: userData.confirmPassword,
       gender: gander,
-      phone: dial_code +phone,
+      phone: dial_code + phone,
     };
 
     SignUpUser(signUpData)
@@ -73,90 +80,98 @@ const Register = ({ navigation }) => {
 
   return (
     <View style={styles.container}>
-     <ScrollView >
-     <Text style={styles.headTitle}>Fill in The Form With Your Data</Text>
-      <Text style={styles.description}>
-        Create a new account to make it easier for you to bid anywhere and
-        anytime
-      </Text>
-      <View style={styles.form}>
-        <View style={{ marginBottom: Space.M2 }}>
-          <Text style={styles.label}>Name</Text>
-          <TextInput
-            onChangeText={(text)=>GetUserData('name', text)}
-            placeholder="John"
-            placeholderTextColor={"grey"}
-            style={styles.input}
-          />
+      <ScrollView>
+        <Text style={styles.headTitle}>Fill in The Form With Your Data</Text>
+        <Text style={styles.description}>
+          Create a new account to make it easier for you to bid anywhere and
+          anytime
+        </Text>
+        <View style={styles.form}>
+          <View style={{ marginBottom: Space.M2 }}>
+            <Text style={styles.label}>Name</Text>
+            <TextInput
+              onChangeText={(text) => GetUserData("name", text)}
+              placeholder="John"
+              placeholderTextColor={"grey"}
+              style={styles.input}
+            />
+          </View>
+          <View style={{ marginBottom: Space.M2 }}>
+            <Text style={styles.label}>Email</Text>
+            <TextInput
+              onChangeText={(text) => GetUserData("email", text)}
+              inputMode="email"
+              placeholder="example@gmail.com"
+              placeholderTextColor={"grey"}
+              style={styles.input}
+            />
+          </View>
+          <View style={{ marginBottom: Space.M2 }}>
+            <Text style={styles.label}>Password</Text>
+            <TextInput
+              onChangeText={(text) => GetUserData("password", text)}
+              placeholder="********"
+              placeholderTextColor={"grey"}
+              style={styles.input}
+            />
+          </View>
+          <View style={{ marginBottom: Space.M2 }}>
+            <Text style={styles.label}>Confirm Password</Text>
+            <TextInput
+              onChangeText={(text) => GetUserData("confirmPassword", text)}
+              placeholder="********"
+              placeholderTextColor={"grey"}
+              style={styles.input}
+            />
+          </View>
+          <Pressable
+            onPress={handlePicker}
+            style={[{ marginBottom: Space.M2 }]}
+          >
+            <Text style={styles.label}>Gander</Text>
+          </Pressable>
+          {isPicker === true ? (
+            <Picker
+              style={{ height: 40, color: Colors.darkBlue }}
+              selectedValue={gander}
+              onValueChange={(itemValue) => {
+                setGander(itemValue), setIsPicker(false);
+              }}
+            >
+              {data?.map((item, index) => (
+                <Picker.Item
+                  key={index}
+                  label={`${item.name}`}
+                  value={`${item.id}`}
+                />
+              ))}
+            </Picker>
+          ) : (
+            <View style={styles.btnCard}>
+              <View
+                style={[
+                  {
+                    color: Colors.white,
+                    backgroundColor: Colors.info,
+                    borderRadius: Size.ROUNDED1,
+                    paddingLeft: Space.P4,
+                    paddingRight: Space.P4,
+                  },
+                ]}
+              >
+                <Pressable
+                  disabled={isTrue}
+                  onPress={handleSignUp}
+                  style={styles.btn}
+                >
+                  <Text style={{ color: Colors.white }}>Next</Text>
+                </Pressable>
+              </View>
+            </View>
+          )}
         </View>
-        <View style={{ marginBottom: Space.M2 }}>
-          <Text style={styles.label}>Email</Text>
-          <TextInput
-            onChangeText={(text)=>GetUserData('email', text)}
-            inputMode="email"
-            placeholder="example@gmail.com"
-            placeholderTextColor={"grey"}
-            style={styles.input}
-          />
-        </View>
-        <View style={{ marginBottom: Space.M2 }}>
-          <Text style={styles.label}>Password</Text>
-          <TextInput
-            onChangeText={(text)=>GetUserData('password', text)}
-            placeholder="********"
-            placeholderTextColor={"grey"}
-            style={styles.input}
-          />
-        </View>
-        <View style={{ marginBottom: Space.M2 }}>
-          <Text style={styles.label}>Confirm Password</Text>
-          <TextInput
-            onChangeText={(text)=>GetUserData('confirmPassword', text)}
-            placeholder="********"
-            placeholderTextColor={"grey"}
-            style={styles.input}
-          />
-        </View>
-        <Pressable onPress={handlePicker} style={[{ marginBottom: Space.M2 }]}>
-  <Text style={styles.label}>Gander</Text>
-
-</Pressable>
-{isPicker === true? (
-      <Picker
-      style={{ height: 40, color: Colors.darkBlue }}
-      selectedValue={gander}
-      onValueChange={(itemValue) => {setGander(itemValue),setIsPicker(false)}}
-    >
-      {data?.map((item, index) => (
-        <Picker.Item
-          key={index}
-          label={`${item.name}`}
-          value={`${item.id}`}
-        />
-      ))}
-    </Picker>
-    ):(<View style={styles.btnCard}>
-      <View
-        style={[
-          {
-            color: Colors.white,
-            backgroundColor: Colors.info,
-            borderRadius: Size.ROUNDED1,
-            paddingLeft: Space.P4,
-            paddingRight: Space.P4,
-          },
-        ]}
-      >
-        <Pressable disabled={isTrue} onPress={handleSignUp} style={styles.btn}>
-          <Text style={{ color: Colors.white }}>Next</Text>
-        </Pressable>
-      </View>
-    </View>)}
-
-</View>
-
-</ScrollView>
-     <View style={styles.bottomPart}>
+      </ScrollView>
+      <View style={styles.bottomPart}>
         <Text style={styles.textBottomPart}>Already have an Account?</Text>
         <View>
           <Button>
@@ -172,8 +187,6 @@ const Register = ({ navigation }) => {
           </Button>
         </View>
       </View>
-
-
     </View>
   );
 };

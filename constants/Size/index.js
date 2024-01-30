@@ -9,7 +9,7 @@ export const Size = {
 
   DEFAULT : 1,
 
-  ROUNDED : "50%",
+  ROUNDED : 20,
   ROUNDED1 : 10,
   ROUNDED2 : 15,
   ROUNDED3 : 20,
