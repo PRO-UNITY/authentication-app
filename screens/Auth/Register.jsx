@@ -6,8 +6,11 @@ import {
   TextInput,
   Pressable,
   ScrollView,
+  CheckBox,
 } from "react-native";
 import { Picker } from "@react-native-picker/picker";
+import Icon from "react-native-vector-icons/Ionicons";
+
 import {
   Colors,
   Space,
@@ -31,6 +34,7 @@ const Register = ({ navigation }) => {
   const [data, setData] = useState([]);
   const [isPicker, setIsPicker] = useState(false);
   const [isTrue, setIsTrue] = useState(true);
+  const [secure, setSecure] = useState(true);
 
   useEffect(() => {
     getData();
@@ -60,6 +64,10 @@ const Register = ({ navigation }) => {
 
   const handlePicker = () => {
     setIsPicker(true);
+  };
+
+  const changeType = () => {
+    setSecure(!secure);
   };
 
   const handleSignUp = () => {
@@ -110,6 +118,7 @@ const Register = ({ navigation }) => {
           <View style={{ marginBottom: Space.M2 }}>
             <Text style={styles.label}>Password</Text>
             <TextInput
+              secureTextEntry={secure}
               onChangeText={(text) => GetUserData("password", text)}
               placeholder="********"
               placeholderTextColor={"grey"}
@@ -119,11 +128,16 @@ const Register = ({ navigation }) => {
           <View style={{ marginBottom: Space.M2 }}>
             <Text style={styles.label}>Confirm Password</Text>
             <TextInput
+              secureTextEntry={secure}
               onChangeText={(text) => GetUserData("confirmPassword", text)}
               placeholder="********"
               placeholderTextColor={"grey"}
               style={styles.input}
             />
+          </View>
+          <View style={styles.passwordType}>
+            <Text>Hide Password</Text>
+            <CheckBox value={secure} onValueChange={changeType} />
           </View>
           <Pressable
             onPress={handlePicker}
@@ -163,7 +177,7 @@ const Register = ({ navigation }) => {
                 <Pressable
                   disabled={isTrue}
                   onPress={handleSignUp}
-                  style={[styles.btn,{opacity: isTrue?0.5:1}]}
+                  style={[styles.btn, { opacity: isTrue ? 0.5 : 1 }]}
                 >
                   <Text style={{ color: Colors.white }}>Next</Text>
                 </Pressable>
@@ -231,6 +245,13 @@ const styles = StyleSheet.create({
     borderColor: "grey",
     paddingTop: Space.P2,
     paddingBottom: Space.P2,
+    flex: 5,
+  },
+  passwordType: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: Space.G3,
+    justifyContent: "flex-end",
   },
   bottomPart: {
     flexDirection: "row",
