@@ -34,7 +34,8 @@ const Register = ({ navigation }) => {
   const [data, setData] = useState([]);
   const [isPicker, setIsPicker] = useState(false);
   const [isTrue, setIsTrue] = useState(true);
-  const [secure, setSecure] = useState(true);
+  const [securePassword, setSecurePassword] = useState(true);
+  const [secureConfirmPassword, setSecureConfirmPassword] = useState(true);
 
   useEffect(() => {
     getData();
@@ -66,8 +67,12 @@ const Register = ({ navigation }) => {
     setIsPicker(true);
   };
 
-  const changeType = () => {
-    setSecure(!secure);
+  const changeTypePassword = (id) => {
+    if (id === 1) {
+      setSecurePassword(!securePassword);
+    } else {
+      setSecureConfirmPassword(!secureConfirmPassword);
+    }
   };
 
   const handleSignUp = () => {
@@ -98,46 +103,62 @@ const Register = ({ navigation }) => {
         <View style={styles.form}>
           <View style={{ marginBottom: Space.M2 }}>
             <Text style={styles.label}>Name</Text>
-            <TextInput
-              onChangeText={(text) => GetUserData("name", text)}
-              placeholder="John"
-              placeholderTextColor={"grey"}
-              style={styles.input}
-            />
+            <View style={styles.inputIcon}>
+              <TextInput
+                onChangeText={(text) => GetUserData("name", text)}
+                placeholder="John"
+                placeholderTextColor={"grey"}
+                style={styles.input}
+              />
+            </View>
           </View>
           <View style={{ marginBottom: Space.M2 }}>
             <Text style={styles.label}>Email</Text>
-            <TextInput
-              onChangeText={(text) => GetUserData("email", text)}
-              inputMode="email"
-              placeholder="example@gmail.com"
-              placeholderTextColor={"grey"}
-              style={styles.input}
-            />
+            <View style={styles.inputIcon}>
+              <TextInput
+                onChangeText={(text) => GetUserData("email", text)}
+                inputMode="email"
+                placeholder="example@gmail.com"
+                placeholderTextColor={"grey"}
+                style={styles.input}
+              />
+            </View>
           </View>
           <View style={{ marginBottom: Space.M2 }}>
             <Text style={styles.label}>Password</Text>
-            <TextInput
-              secureTextEntry={secure}
-              onChangeText={(text) => GetUserData("password", text)}
-              placeholder="********"
-              placeholderTextColor={"grey"}
-              style={styles.input}
-            />
+            <View style={styles.inputIcon}>
+              <TextInput
+                secureTextEntry={securePassword}
+                onChangeText={(text) => GetUserData("password", text)}
+                placeholder="********"
+                placeholderTextColor={"grey"}
+                style={styles.input}
+              />
+              <Icon
+                onPress={() => changeTypePassword(1)}
+                name="eye"
+                size={15}
+                color={"grey"}
+              />
+            </View>
           </View>
           <View style={{ marginBottom: Space.M2 }}>
             <Text style={styles.label}>Confirm Password</Text>
-            <TextInput
-              secureTextEntry={secure}
-              onChangeText={(text) => GetUserData("confirmPassword", text)}
-              placeholder="********"
-              placeholderTextColor={"grey"}
-              style={styles.input}
-            />
-          </View>
-          <View style={styles.passwordType}>
-            <Text>Hide Password</Text>
-            <CheckBox value={secure} onValueChange={changeType} />
+            <View style={styles.inputIcon}>
+              <TextInput
+                secureTextEntry={secureConfirmPassword}
+                onChangeText={(text) => GetUserData("confirmPassword", text)}
+                placeholder="********"
+                placeholderTextColor={"grey"}
+                style={styles.input}
+              />
+              <Icon
+                onPress={() => changeTypePassword(2)}
+                name="eye"
+                size={15}
+                color={"grey"}
+              />
+            </View>
           </View>
           <Pressable
             onPress={handlePicker}
@@ -240,18 +261,18 @@ const styles = StyleSheet.create({
     color: "grey",
   },
   input: {
-    borderWidth: Size.NONE,
-    borderBottomWidth: Size.DEFAULT,
-    borderColor: "grey",
     paddingTop: Space.P2,
     paddingBottom: Space.P2,
     flex: 5,
   },
-  passwordType: {
+  inputIcon: {
     flexDirection: "row",
     alignItems: "center",
     gap: Space.G3,
     justifyContent: "flex-end",
+    borderWidth: Size.NONE,
+    borderBottomWidth: Size.DEFAULT,
+    borderColor: "grey",
   },
   bottomPart: {
     flexDirection: "row",
