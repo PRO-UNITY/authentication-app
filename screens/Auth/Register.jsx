@@ -41,16 +41,17 @@ const Register = ({ navigation }) => {
 
   useEffect(() => {
     if (
-      userData.name.length > 0 &&
-      userData.email.length > 0 &&
-      userData.password.length > 0 &&
-      userData.confirmPassword.length > 0
+      userData.name != "" &&
+      userData.email.length != "" &&
+      userData.password.length != "" &&
+      userData.confirmPassword.length != ""
     ) {
       setIsTrue(false);
     } else {
       setIsTrue(true);
     }
-  }, []);
+    console.log(isTrue);
+  }, [userData.confirmPassword]);
 
   const getData = async () => {
     GetStringFromStorage("phone").then((res) => setPhone(res));
@@ -162,7 +163,7 @@ const Register = ({ navigation }) => {
                 <Pressable
                   disabled={isTrue}
                   onPress={handleSignUp}
-                  style={styles.btn}
+                  style={[styles.btn,{opacity: isTrue?0.5:1}]}
                 >
                   <Text style={{ color: Colors.white }}>Next</Text>
                 </Pressable>
