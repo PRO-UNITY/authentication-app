@@ -24,8 +24,9 @@ import {
   GetStringFromStorage,
 } from "../../utils/Storage";
 import { Button } from "../../components";
-import { GetGender, SignUpUser } from "../../services";
+import { SignUpUser } from "../../services";
 import { GetUserData, userData } from "./User";
+import { Gander } from "../../mock/data";
 
 const Register = ({ navigation }) => {
   const [phone, setPhone] = useState("");
@@ -39,9 +40,7 @@ const Register = ({ navigation }) => {
 
   useEffect(() => {
     getData();
-    GetGender().then((res) => {
-      setData(res);
-    });
+      setData(Gander);
   }, []);
 
   useEffect(() => {
@@ -55,7 +54,6 @@ const Register = ({ navigation }) => {
     } else {
       setIsTrue(true);
     }
-    console.log(isTrue);
   }, [userData.confirmPassword]);
 
   const getData = async () => {
@@ -176,7 +174,7 @@ const Register = ({ navigation }) => {
             >
               {data?.map((item, index) => (
                 <Picker.Item
-                  key={index}
+                  key={item.id}
                   label={`${item.name}`}
                   value={`${item.id}`}
                 />
