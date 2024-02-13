@@ -1,4 +1,9 @@
-export { default as NumberRegister } from "./Auth/NumberRegister";
-export { default as Countries } from "./Auth/Countries";
 export { default as Register } from "./Auth/Register";
-export { default as Success } from "./Auth/Success";
+export { default as Home } from "./User/Home";
+export { default as Login } from './Auth/Login'
+export { default as ForgetPassword } from './Auth/ForgetPassword'
+export { default as Favourite } from './User/Favourite'
+export { default as FoodOrder } from './User/FoodOrder'
+export { default as OrderHistory } from './User/OrderHistory'
+export { default as Settings } from './User/Settings'
+export { default as Search } from './User/Search'

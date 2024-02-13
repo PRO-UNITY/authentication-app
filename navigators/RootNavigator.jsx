@@ -1,33 +1,19 @@
+import TabNavigators from "./TabNavigators";
+import { Register, Login, ForgetPassword } from "../screens";;
+
+import React from "react";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import { Countries, NumberRegister, Register, Success } from "../screens";
 
-const Stack = createNativeStackNavigator();
-
+const RootStack = createNativeStackNavigator();
 const RootNavigator = () => {
-  return (
-    <Stack.Navigator>
-      <Stack.Screen
-        name="Numberregister"
-        component={NumberRegister}
-        options={{ headerShown: false }}
-      />
-      <Stack.Screen
-        name="Countries"
-        component={Countries}
-        options={{ headerShown: false }}
-      />
-      <Stack.Screen
-        name="Register"
-        component={Register}
-        options={{ headerShown: false }}
-      />
-      <Stack.Screen
-        name="Success"
-        component={Success}
-        options={{ headerShown: false }}
-      />
-    </Stack.Navigator>
-  );
+    return (
+        <RootStack.Navigator  screenOptions={{ headerShown: false }}>
+            <RootStack.Screen name="Register" component={Register} />
+            <RootStack.Screen name="Login" component={Login} />
+            <RootStack.Screen name="ForgetPassword" component={ForgetPassword} />
+            <RootStack.Screen name="TabStack" component={TabNavigators} />
+        </RootStack.Navigator>
+    );
 };
 
 export default RootNavigator;
